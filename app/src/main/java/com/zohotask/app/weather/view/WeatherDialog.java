@@ -41,6 +41,7 @@ public class WeatherDialog {
         Button closeBtn = dialogView.findViewById(R.id.cancelButton);
 
         builder.setCancelable(false);
+
         if(weatherVal.toLowerCase().equals("rain")){
             weatherImage.setImageResource(R.drawable.ic_rain);
         }else if(weatherVal.toLowerCase().equals("mist")){

@@ -6,6 +6,8 @@ import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface WebServiceAPI {
@@ -14,4 +16,5 @@ public interface WebServiceAPI {
     @GET("weather")
     Observable<Response<ResponseBody>> getWeatherDetail(@Query("q") String city, @Query("lat") String lat,
                                                         @Query("lon") String lng, @Query("lang") String language);
+
 }

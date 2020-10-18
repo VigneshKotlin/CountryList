@@ -47,7 +47,8 @@ public class RetrofitConfig {
         httpClient.addInterceptor(new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
-                Request request = chain.request().newBuilder().addHeader("x-rapidapi-host", "community-open-weather-map.p.rapidapi.com")
+                Request request = chain.request().newBuilder()
+                        .addHeader("x-rapidapi-host", "community-open-weather-map.p.rapidapi.com")
                         .addHeader("x-rapidapi-key", "37bafc7adfmsh6ebb0df43b231dfp1b69aejsna49b2d45e204")
                         .build();
                 return chain.proceed(request);

@@ -26,6 +26,7 @@ public class CountryDetailsScreen  extends Fragment {
         }
         if(getArguments() != null) {
             countryDetailString = getArguments().getString("countryData");
+            //String to model
             countryListModel = new Gson().fromJson(countryDetailString, CountryListModel.class);
         }
         countryDetailsVM = new CountryDetailsVM(getActivity(), binding, countryListModel);

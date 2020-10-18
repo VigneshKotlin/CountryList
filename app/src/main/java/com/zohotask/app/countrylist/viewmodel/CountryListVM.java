@@ -82,13 +82,14 @@ public class CountryListVM implements CountryListAdapter.OnItemClickListener {
                         public void accept(Response<ResponseBody> responses) throws Exception {
                             progressDialog.dismissProgressBar();
                             String response = responses.body().string();
+                            //Parsing the data
                             Type inputType = new TypeToken<List<CountryListModel>>(){}.getType();
-
                             try {
                                 CountryListArr = new Gson().fromJson(response, inputType);
                             }catch (Exception e){
                                 e.printStackTrace();
                             }
+                            //Load Adapter
                             loadAdapter();
                         }
                     }, new Consumer<Throwable>() {
@@ -131,6 +132,7 @@ public class CountryListVM implements CountryListAdapter.OnItemClickListener {
     public void onItemClick(CountryListModel countryListModel) {
         String countryData = new Gson().toJson(countryListModel);
         Bundle bundle = new Bundle();
+        //Model to string
         bundle.putString("countryData", countryData);
         Fragment detailFragment= new CountryDetailsScreen();
         detailFragment.setArguments(bundle);

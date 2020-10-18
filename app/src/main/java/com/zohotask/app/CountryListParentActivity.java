@@ -51,8 +51,11 @@ public class CountryListParentActivity extends AppCompatActivity {
         frameLayout = findViewById(R.id.frameLayout);
         weatherImageView = findViewById(R.id.weather);
         countryListFragment = new CountryListScreen();
+        //Check location permission
         requestPermission();
+        //Get Lat lng
         getCurrentLocation();
+        //Initialize the fragment
         loadFragment();
 
         weatherImageView.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +68,7 @@ public class CountryListParentActivity extends AppCompatActivity {
 
     private void getCurrentLocation(){
         client = LocationServices.getFusedLocationProviderClient(this);
+        //Check location permission
         if (ActivityCompat.checkSelfPermission(CountryListParentActivity.this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
             return;
         }
@@ -99,8 +103,10 @@ public class CountryListParentActivity extends AppCompatActivity {
                         @Override
                         public void accept(Response<ResponseBody> responses) throws Exception {
                             progressDialog.dismissProgressBar();
+                            //String response
                             String response = responses.body().string();
-                            Log.e("Main",">>"+response);
+                            //Log.e("Main",">>"+response);
+                            //Parsing string responbse to model class
                             WeatherResponseModel responseModel = new Gson().fromJson(response, WeatherResponseModel.class);
                             Double degreeCelsius = responseModel.getMain().getTemp() - 273.15;
                             WeatherDialog.getInstance().showAlert(CountryListParentActivity.this, String.valueOf(degreeCelsius),
@@ -119,6 +125,7 @@ public class CountryListParentActivity extends AppCompatActivity {
         }
     }
 
+    //Run time permission
     private void requestPermission(){
         ActivityCompat.requestPermissions(this, new String[]{ACCESS_FINE_LOCATION}, 1);
     }
