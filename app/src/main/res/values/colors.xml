@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="splash_bg_color">#031930</color>
+    <color name="theme_primary_font_color">#ffbe00</color>
+    <color name="titlebar_color">#303438</color>
+    <color name="border_color">#ffdd78</color>
+</resources>

@@ -1,0 +1,91 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginStart="35dp"
+    android:background="@android:color/transparent"
+    android:layout_marginEnd="35dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/splash_bg_color"
+        android:padding="20dp">
+        <ImageView
+            android:id="@+id/weatherIcon"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_weather"
+            android:layout_gravity="center"
+            />
+
+        <TextView
+            android:id="@+id/tempTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/josefinsans_bold"
+            android:gravity="center"
+            android:text="90"
+            android:textColor="@android:color/white"
+            android:textSize="36sp" />
+        <TextView
+            android:id="@+id/weatherTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/josefinsans_bold"
+            android:gravity="center"
+            android:text="Rain"
+            android:textColor="@color/theme_primary_font_color"
+            android:textSize="25sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/josefinsans_bold"
+                android:gravity="center"
+                android:text="Humidity:"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/humidityTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:fontFamily="@font/josefinsans_bold"
+                android:gravity="center"
+                android:text="90"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="10dp"
+            android:background="@color/theme_primary_font_color"
+            android:fontFamily="@font/josefinsans_bold"
+            android:text="Close"
+            android:textColor="@android:color/white"/>
+
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>
