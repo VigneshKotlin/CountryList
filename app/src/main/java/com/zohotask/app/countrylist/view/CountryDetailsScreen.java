@@ -12,12 +12,13 @@ import com.zohotask.app.R;
 import com.zohotask.app.countrylist.model.CountryListModel;
 import com.zohotask.app.countrylist.viewmodel.CountryDetailsVM;
 import com.zohotask.app.databinding.FragmentCountryDetailBinding;
+import com.zohotask.app.roomdb.CountryListEntity;
 
 public class CountryDetailsScreen  extends Fragment {
     private FragmentCountryDetailBinding binding;
     private CountryDetailsVM countryDetailsVM;
     private String countryDetailString;
-    private CountryListModel countryListModel = new CountryListModel();
+    private CountryListEntity countryListModel = new CountryListEntity();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.fragment_country_detail, container, false);
@@ -27,7 +28,7 @@ public class CountryDetailsScreen  extends Fragment {
         if(getArguments() != null) {
             countryDetailString = getArguments().getString("countryData");
             //String to model
-            countryListModel = new Gson().fromJson(countryDetailString, CountryListModel.class);
+            countryListModel = new Gson().fromJson(countryDetailString, CountryListEntity.class);
         }
         countryDetailsVM = new CountryDetailsVM(getActivity(), binding, countryListModel);
         binding.setCountryDetailVM(countryDetailsVM);

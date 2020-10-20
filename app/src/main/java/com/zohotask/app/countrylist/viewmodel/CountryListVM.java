@@ -9,15 +9,19 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.room.Room;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.zohotask.app.CountryListParentActivity;
 import com.zohotask.app.R;
 import com.zohotask.app.countrylist.adapter.CountryListAdapter;
+import com.zohotask.app.countrylist.model.CountryListFinalDataModel;
 import com.zohotask.app.countrylist.model.CountryListModel;
 import com.zohotask.app.countrylist.view.CountryDetailsScreen;
 import com.zohotask.app.databinding.FragmentCountryListBinding;
+import com.zohotask.app.roomdb.CountryListDatabase;
+import com.zohotask.app.roomdb.CountryListEntity;
 import com.zohotask.app.utils.InternetReachability;
 import com.zohotask.app.utils.LoadingProgress;
 import com.zohotask.app.webengine.RetrofitConfig;
@@ -41,6 +45,8 @@ public class CountryListVM implements CountryListAdapter.OnItemClickListener {
     private FragmentCountryListBinding binding;
     private List<CountryListModel> CountryListArr;
     private CountryListAdapter adapter;
+    private CountryListDatabase db;
+    private List<CountryListEntity> countryListFinalDataModel = new ArrayList<>();
 
     public CountryListVM(Activity activity, FragmentCountryListBinding binding){
         this.activity = activity;
@@ -48,10 +54,12 @@ public class CountryListVM implements CountryListAdapter.OnItemClickListener {
         CountryListArr = new ArrayList<>();
         progressDialog = new LoadingProgress();
         init();
-        callCountryListAPI();
+        callCountryListService();
     }
 
     private void init(){
+        db = Room.databaseBuilder(activity.getApplicationContext(), CountryListDatabase.class, "countryDB")
+                .allowMainThreadQueries().build();
         binding.searchView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -89,8 +97,8 @@ public class CountryListVM implements CountryListAdapter.OnItemClickListener {
                             }catch (Exception e){
                                 e.printStackTrace();
                             }
-                            //Load Adapter
-                            loadAdapter();
+                            //Load Local DB
+                            loadLocalStorage(CountryListArr);
                         }
                     }, new Consumer<Throwable>() {
                         @Override
@@ -105,31 +113,31 @@ public class CountryListVM implements CountryListAdapter.OnItemClickListener {
         }
     }
 
-    private void loadAdapter(){
+    private void loadAdapter(List<CountryListEntity> countryArr){
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         adapter = new CountryListAdapter(activity,
-                CountryListArr, this);
+                countryArr, this);
         binding.recyclerView.setAdapter(adapter);
     }
 
     private void searchFilter(String searchText){
         if(CountryListArr != null && adapter != null) {
-            List<CountryListModel> tempArr = new ArrayList<>();
+            List<CountryListEntity> tempArr = new ArrayList<>();
             if (!searchText.isEmpty()) {
-                for (CountryListModel countryListModel : CountryListArr) {
+                for (CountryListEntity countryListModel : countryListFinalDataModel) {
                     if (countryListModel.getName().toLowerCase().contains(searchText.toLowerCase())) {
                         tempArr.add(countryListModel);
                     }
                 }
                 adapter.updateList(tempArr);
             } else {
-                adapter.updateList(CountryListArr);
+                adapter.updateList(countryListFinalDataModel);
             }
         }
     }
 
     @Override
-    public void onItemClick(CountryListModel countryListModel) {
+    public void onItemClick(CountryListEntity countryListModel) {
         String countryData = new Gson().toJson(countryListModel);
         Bundle bundle = new Bundle();
         //Model to string
@@ -140,5 +148,35 @@ public class CountryListVM implements CountryListAdapter.OnItemClickListener {
                 .add(R.id.frameLayout, detailFragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    public void loadLocalStorage(List<CountryListModel> CountryListArr){
+        for(CountryListModel cl : CountryListArr) {
+            CountryListEntity countryList = new CountryListEntity();
+            countryList.setFlag(cl.getFlag());
+            countryList.setName(cl.getName());
+            countryList.setCapital(cl.getCapital());
+            countryList.setCurrency(cl.getCurrencies().get(0).getName());
+            countryList.setCurrencySymbol(cl.getCurrencies().get(0).getSymbol());
+            countryList.setLanguage(cl.getLanguages().get(0).getName());
+            countryList.setPopulation(String.valueOf(cl.getPopulation()));
+            db.countryDAO().addCountry(countryList);
+        }
+
+        countryListFinalDataModel = db.countryDAO().getCountries();
+        Log.e("Test CountryList", ">>"+countryListFinalDataModel.size());
+        loadAdapter(countryListFinalDataModel);
+    }
+
+    public void callCountryListService(){
+        List<CountryListEntity> countryList = new ArrayList<>();
+        countryList = db.countryDAO().getCountries();
+        Log.e("Test CountryList", ">>"+countryList.size());
+        if(countryList.size() > 0 ) {
+            countryListFinalDataModel.addAll(countryList);
+            loadAdapter(countryList);
+        }else{
+            callCountryListAPI();
+        }
     }
 }

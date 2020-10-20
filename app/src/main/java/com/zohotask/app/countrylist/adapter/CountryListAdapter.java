@@ -13,15 +13,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ahmadrosid.svgloader.SvgLoader;
 import com.zohotask.app.R;
+import com.zohotask.app.countrylist.model.CountryListFinalDataModel;
 import com.zohotask.app.countrylist.model.CountryListModel;
+import com.zohotask.app.roomdb.CountryListEntity;
 
 import java.util.List;
 
 public class CountryListAdapter extends RecyclerView.Adapter<CountryListAdapter.MyViewHolder> {
-    private List<CountryListModel> countryListArr;
+    private List<CountryListEntity> countryListArr;
     private Activity context;
     private OnItemClickListener itemClickListener;
-    public CountryListAdapter(Activity context, List<CountryListModel> countryListArr, CountryListAdapter.OnItemClickListener itemClickListener){
+    public CountryListAdapter(Activity context, List<CountryListEntity> countryListArr, CountryListAdapter.OnItemClickListener itemClickListener){
         this.context = context;
         this.countryListArr = countryListArr;
         this.itemClickListener = itemClickListener;
@@ -36,7 +38,7 @@ public class CountryListAdapter extends RecyclerView.Adapter<CountryListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        final CountryListModel countryListModel = countryListArr.get(position);
+        final CountryListEntity countryListModel = countryListArr.get(position);
         SvgLoader.pluck()
                 .with(context)
                 .setPlaceHolder(R.drawable.ic_image, R.drawable.ic_image)
@@ -52,7 +54,7 @@ public class CountryListAdapter extends RecyclerView.Adapter<CountryListAdapter.
         });
     }
 
-    public void updateList(List<CountryListModel> list){
+    public void updateList(List<CountryListEntity> list){
         countryListArr = list;
         notifyDataSetChanged();
     }
@@ -76,6 +78,6 @@ public class CountryListAdapter extends RecyclerView.Adapter<CountryListAdapter.
     }
 
     public interface OnItemClickListener{
-        void onItemClick(CountryListModel countryListModel);
+        void onItemClick(CountryListEntity countryListModel);
     }
 }

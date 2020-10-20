@@ -9,6 +9,7 @@ import com.zohotask.app.CountryListParentActivity;
 import com.zohotask.app.R;
 import com.zohotask.app.countrylist.model.CountryListModel;
 import com.zohotask.app.databinding.FragmentCountryDetailBinding;
+import com.zohotask.app.roomdb.CountryListEntity;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
@@ -16,9 +17,9 @@ public class CountryDetailsVM {
 
     private Activity activity;
     private FragmentCountryDetailBinding binding;
-    private CountryListModel countryData;
+    private CountryListEntity countryData;
 
-    public CountryDetailsVM(Activity activity, FragmentCountryDetailBinding binding, CountryListModel countryData){
+    public CountryDetailsVM(Activity activity, FragmentCountryDetailBinding binding, CountryListEntity countryData){
         this.activity = activity;
         this.binding = binding;
         this.countryData = countryData;
@@ -29,10 +30,10 @@ public class CountryDetailsVM {
     private void initViews(){
         binding.capitalTv.setText(countryData.getCapital());
         binding.nameTv.setText(countryData.getName());
-        binding.currencyTv.setText(countryData.getCurrencies().get(0).getName()+" - "+countryData.getCurrencies().get(0).getSymbol());
+        binding.currencyTv.setText(countryData.getName()+" - "+countryData.getCurrencySymbol());
         binding.populationTv.setText(String.valueOf(countryData.getPopulation()));
-        if(countryData.getLanguages().size() > 0) {
-            binding.languageTv.setText(countryData.getLanguages().get(0).getName());
+        if(countryData.getLanguage() != null) {
+            binding.languageTv.setText(countryData.getLanguage());
         }
         SvgLoader.pluck()
                 .with(activity)
